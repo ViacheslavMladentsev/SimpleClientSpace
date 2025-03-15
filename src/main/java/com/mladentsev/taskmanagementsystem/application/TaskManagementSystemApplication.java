@@ -1,4 +1,4 @@
-package com.mladentsev.taskmanagementsystem;
+package com.mladentsev.taskmanagementsystem.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
