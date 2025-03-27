@@ -5,14 +5,16 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "accounts")
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Account extends BaseEntity {
 
     @Column(name = "login", length = 20, nullable = false, unique = true, updatable = false)
@@ -30,9 +32,9 @@ public class Account extends BaseEntity {
 
     @ManyToMany
     @JoinTable(name = "accounts_roles",
-            joinColumns = @JoinColumn(name = "roles_id"),
-            inverseJoinColumns = @JoinColumn(name = "accounts_id"))
-    private Set<Role> roles;
+            joinColumns = @JoinColumn(name = "accounts_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    private List<Role> roles;
 
 
     public String getLogin() {
@@ -67,11 +69,12 @@ public class Account extends BaseEntity {
         this.user = user;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
 }

@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+@EqualsAndHashCode(of = "id")
+@ToString(callSuper = true)
 public abstract class BaseEntity {
 
     @Id
@@ -46,4 +48,5 @@ public abstract class BaseEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

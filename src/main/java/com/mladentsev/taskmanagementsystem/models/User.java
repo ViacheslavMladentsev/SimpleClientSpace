@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+@Entity
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
-@Entity
-@Table(name = "users")
+@ToString(callSuper = true)
 public class User extends BaseEntity {
 
     @Column(name = "first_name", length = 20, nullable = false)
@@ -59,4 +59,5 @@ public class User extends BaseEntity {
     public void setAccount(Account account) {
         this.account = account;
     }
+
 }

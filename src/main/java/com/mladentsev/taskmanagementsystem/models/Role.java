@@ -1,18 +1,22 @@
 package com.mladentsev.taskmanagementsystem.models;
 
+
 import com.mladentsev.taskmanagementsystem.enums.ERoles;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-@EqualsAndHashCode
-@ToString
+
 @Entity
 @Table(name = "roles")
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString(callSuper = true)
 public class Role  {
 
     @Id
@@ -25,5 +29,31 @@ public class Role  {
 
     @ManyToMany(mappedBy = "roles")
     private Set<Account> accounts;
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ERoles getRole() {
+        return role;
+    }
+
+    public void setRole(ERoles role) {
+        this.role = role;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
 
 }
