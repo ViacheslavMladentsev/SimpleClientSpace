@@ -5,7 +5,7 @@ import com.mladentsev.taskmanagementsystem.dto.RequestRegisterDto;
 
 import com.mladentsev.taskmanagementsystem.exception.InvalidRequestParametrsException;
 import com.mladentsev.taskmanagementsystem.exception.UserExistsException;
-import com.mladentsev.taskmanagementsystem.services.AccountService;
+import com.mladentsev.taskmanagementsystem.services.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterController {
 
-    private final AccountService accountService;
+    private final RegistrationService accountService;
 
     @Autowired
-    public RegisterController(AccountService accountService) {
+    public RegisterController(RegistrationService accountService) {
         this.accountService = accountService;
     }
 

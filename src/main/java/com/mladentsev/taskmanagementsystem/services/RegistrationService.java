@@ -1,7 +1,7 @@
 package com.mladentsev.taskmanagementsystem.services;
 
+
 import com.mladentsev.taskmanagementsystem.dto.RequestRegisterDto;
-import com.mladentsev.taskmanagementsystem.enums.ERoles;
 import com.mladentsev.taskmanagementsystem.exception.UserExistsException;
 import com.mladentsev.taskmanagementsystem.models.Account;
 import com.mladentsev.taskmanagementsystem.models.Role;
@@ -15,16 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Service
-public class AccountService {
+public class RegistrationService {
 
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     private final IAccountRepositories iAccountRepositories;
 
@@ -33,7 +32,7 @@ public class AccountService {
     private final IRoleRepositories iRoleRepositories;
 
     @Autowired
-    public AccountService(PasswordEncoder encoder, IAccountRepositories iAccountRepositories, IUserRepositories iUserRepositories, IRoleRepositories iRoleRepositories) {
+    public RegistrationService(PasswordEncoder encoder, IAccountRepositories iAccountRepositories, IUserRepositories iUserRepositories, IRoleRepositories iRoleRepositories) {
         this.encoder = encoder;
         this.iAccountRepositories = iAccountRepositories;
         this.iUserRepositories = iUserRepositories;

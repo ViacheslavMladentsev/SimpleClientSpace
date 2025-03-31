@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com.mladentsev.taskmanagementsystem.models")
 @ComponentScan(basePackages = {"com.mladentsev.taskmanagementsystem"})
 @EnableJpaRepositories(basePackages = "com.mladentsev.taskmanagementsystem.repositories")
-public class TaskManagementSystemApplication {
+public class SimpleClientSpaceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaskManagementSystemApplication.class, args);
+		SpringApplication.run(SimpleClientSpaceApplication.class, args);
 	}
 
 }
