@@ -10,7 +10,6 @@ import lombok.*;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class User extends BaseEntity {

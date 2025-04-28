@@ -14,7 +14,6 @@ import java.util.Set;
 @Table(name = "roles")
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString(callSuper = true)
 public class Role  {

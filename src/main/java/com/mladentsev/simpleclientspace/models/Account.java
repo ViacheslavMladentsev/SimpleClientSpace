@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "accounts")
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Account extends BaseEntity {
