@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     public LoginController(AuthenticationManager authenticationManager) {
@@ -39,6 +39,8 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(requestLoginDto.getLogin(),
                             requestLoginDto.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println(">>>>>   " + authentication);
+            System.out.println(">>>>>   " + SecurityContextHolder.getContext().getAuthentication());
             return ResponseEntity.ok().body("Аутентификация прошла успешно.");
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);

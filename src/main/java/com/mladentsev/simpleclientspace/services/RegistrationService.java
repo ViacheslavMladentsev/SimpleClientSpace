@@ -6,9 +6,9 @@ import com.mladentsev.simpleclientspace.exception.UserExistsException;
 import com.mladentsev.simpleclientspace.models.Account;
 import com.mladentsev.simpleclientspace.models.Role;
 import com.mladentsev.simpleclientspace.models.User;
-import com.mladentsev.simpleclientspace.repositories.IAccountRepositories;
-import com.mladentsev.simpleclientspace.repositories.IRoleRepositories;
-import com.mladentsev.simpleclientspace.repositories.IUserRepositories;
+import com.mladentsev.simpleclientspace.repositories.IAccountRepository;
+import com.mladentsev.simpleclientspace.repositories.IRoleRepository;
+import com.mladentsev.simpleclientspace.repositories.IUserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,14 +25,14 @@ public class RegistrationService {
 
     private final PasswordEncoder encoder;
 
-    private final IAccountRepositories iAccountRepositories;
+    private final IAccountRepository iAccountRepositories;
 
-    private final IUserRepositories iUserRepositories;
+    private final IUserRepository iUserRepositories;
 
-    private final IRoleRepositories iRoleRepositories;
+    private final IRoleRepository iRoleRepositories;
 
     @Autowired
-    public RegistrationService(PasswordEncoder encoder, IAccountRepositories iAccountRepositories, IUserRepositories iUserRepositories, IRoleRepositories iRoleRepositories) {
+    public RegistrationService(PasswordEncoder encoder, IAccountRepository iAccountRepositories, IUserRepository iUserRepositories, IRoleRepository iRoleRepositories) {
         this.encoder = encoder;
         this.iAccountRepositories = iAccountRepositories;
         this.iUserRepositories = iUserRepositories;

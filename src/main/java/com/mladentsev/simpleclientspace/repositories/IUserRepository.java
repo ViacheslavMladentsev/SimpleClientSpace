@@ -6,5 +6,5 @@ import com.mladentsev.simpleclientspace.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface IUserRepositories extends JpaRepository<User, Long> {}
+public interface IUserRepository extends JpaRepository<User, Long> {}
 
