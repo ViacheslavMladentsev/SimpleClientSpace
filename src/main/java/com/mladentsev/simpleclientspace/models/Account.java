@@ -25,11 +25,14 @@ public class Account extends BaseEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "is_logout")
+    private Boolean isLogout;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "accounts_roles",
             joinColumns = @JoinColumn(name = "accounts_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
@@ -52,12 +55,20 @@ public class Account extends BaseEntity {
         this.password = password;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public Boolean isLogout() {
+        return isLogout;
+    }
+
+    public void setLogout(Boolean logout) {
+        isLogout = logout;
     }
 
     public User getUser() {

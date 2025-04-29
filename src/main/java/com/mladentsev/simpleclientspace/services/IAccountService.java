@@ -1,5 +1,5 @@
 package com.mladentsev.simpleclientspace.services;
 
-public interface AccountService {
+public interface IAccountService {
 
 }

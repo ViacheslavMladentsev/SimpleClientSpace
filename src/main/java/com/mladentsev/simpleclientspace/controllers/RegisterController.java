@@ -5,7 +5,7 @@ import com.mladentsev.simpleclientspace.dto.request.RequestRegisterDto;
 
 import com.mladentsev.simpleclientspace.exception.InvalidRequestParametrsException;
 import com.mladentsev.simpleclientspace.exception.UserExistsException;
-import com.mladentsev.simpleclientspace.services.RegistrationService;
+import com.mladentsev.simpleclientspace.services.RegistrationServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterController {
 
-    private final RegistrationService accountService;
+    private final RegistrationServiceImpl accountService;
 
     @Autowired
-    public RegisterController(RegistrationService accountService) {
+    public RegisterController(RegistrationServiceImpl accountService) {
         this.accountService = accountService;
     }
 

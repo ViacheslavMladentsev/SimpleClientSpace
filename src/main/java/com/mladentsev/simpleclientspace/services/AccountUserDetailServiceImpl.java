@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountUserDetailServiceImpl implements UserDetailsService, AccountService {
+public class AccountUserDetailServiceImpl implements UserDetailsService, IAccountService {
 
     private final IAccountRepository iAccountRepository;
 

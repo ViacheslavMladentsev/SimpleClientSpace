@@ -1,11 +1,13 @@
 package com.mladentsev.simpleclientspace.services;
 
-import com.mladentsev.simpleclientspace.models.Account;
+import com.mladentsev.simpleclientspace.repositories.IAccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImpl implements JwtService {
+public class JwtServiceImpl implements IJwtService {
 
     @Value("${security.jwt.secret_key}")
     private String secretKey;
@@ -26,6 +28,12 @@ public class JwtServiceImpl implements JwtService {
     @Value("${security.jwt.refresh_token_expiration}")
     private long refreshTokenExpiration;
 
+    private IAccountRepository iAccountRepository;
+
+    @Autowired
+    public JwtServiceImpl(IAccountRepository iAccountRepository) {
+        this.iAccountRepository = iAccountRepository;
+    }
 
     @Override
     public String generateAccessToken(String login) {
@@ -56,22 +64,45 @@ public class JwtServiceImpl implements JwtService {
 
 
     @Override
-    public boolean isValid(String token, UserDetails user) {
-        return false;
-    }
-
-    @Override
-    public boolean isValidRefresh(String token, Account account) {
-        return false;
-    }
-
-    @Override
     public String extractUsername(String token) {
-        return "";
+        return extractClaim(token, Claims::getSubject);
     }
 
     @Override
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
-        return null;
+        Claims claims = extractAllClaims(token);
+        return resolver.apply(claims);
     }
+
+    private Claims extractAllClaims(String token) {
+
+        JwtParserBuilder parser = Jwts.parser();
+        parser.verifyWith(getSigningKey());
+
+        return parser.build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    @Override
+    public boolean isValidToken(String token, UserDetails userDetails) {
+
+        String login = extractUsername(token);
+
+        boolean isValidToken = iAccountRepository.findByLogin(login)
+                .map(t -> !t.isLogout()).orElse(false);
+
+        return login.equals(userDetails.getUsername())
+                && isAccessTokenExpired(token)
+                && isValidToken;
+    }
+
+    private boolean isAccessTokenExpired(String token) {
+        return !extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
 }

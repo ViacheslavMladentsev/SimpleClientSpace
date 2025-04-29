@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class RegistrationService {
+public class RegistrationServiceImpl implements IRegistrationService {
 
     private final PasswordEncoder encoder;
 
@@ -32,7 +32,7 @@ public class RegistrationService {
     private final IRoleRepository iRoleRepositories;
 
     @Autowired
-    public RegistrationService(PasswordEncoder encoder, IAccountRepository iAccountRepositories, IUserRepository iUserRepositories, IRoleRepository iRoleRepositories) {
+    public RegistrationServiceImpl(PasswordEncoder encoder, IAccountRepository iAccountRepositories, IUserRepository iUserRepositories, IRoleRepository iRoleRepositories) {
         this.encoder = encoder;
         this.iAccountRepositories = iAccountRepositories;
         this.iUserRepositories = iUserRepositories;
@@ -60,6 +60,7 @@ public class RegistrationService {
         account.setLogin(requestRegisterDto.getLogin());
         account.setPassword(encoder.encode(requestRegisterDto.getPassword()));
         account.setActive(true);
+        account.setLogout(true);
         account.setUser(user);
         account.setRoles(roles);
         account.setCreatedAt(LocalDateTime.now());
