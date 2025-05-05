@@ -2,7 +2,7 @@ package com.mladentsev.simpleclientspace.services;
 
 
 import com.mladentsev.simpleclientspace.dto.request.RequestRegisterDto;
-import com.mladentsev.simpleclientspace.exception.UserExistsException;
+import com.mladentsev.simpleclientspace.exceptions.UserExistsException;
 import com.mladentsev.simpleclientspace.models.Account;
 import com.mladentsev.simpleclientspace.models.Role;
 import com.mladentsev.simpleclientspace.models.User;

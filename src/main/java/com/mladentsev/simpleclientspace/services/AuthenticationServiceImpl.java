@@ -7,15 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -25,9 +20,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final IAccountRepository iAccountRepository;
 
-    private final JwtServiceImpl jwtServiceImpl;
-
-    private final PasswordEncoder passwordEncoder;
+    private final IJwtService iJwtServiceImpl;
 
     private final AuthenticationManager authenticationManager;
 
@@ -35,13 +28,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     @Autowired
     public AuthenticationServiceImpl(IAccountRepository iAccountRepository,
-                                     JwtServiceImpl jwtServiceImpl,
-                                     PasswordEncoder passwordEncoder,
+                                     IJwtService iJwtServiceImpl,
                                      AuthenticationManager authenticationManager,
                                      AccountUserDetailServiceImpl accountUserDetailService) {
         this.iAccountRepository = iAccountRepository;
-        this.jwtServiceImpl = jwtServiceImpl;
-        this.passwordEncoder = passwordEncoder;
+        this.iJwtServiceImpl = iJwtServiceImpl;
         this.authenticationManager = authenticationManager;
         this.accountUserDetailService = accountUserDetailService;
     }
@@ -53,8 +44,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
                         requestLoginDto.getPassword()));
         iAccountRepository.updateIsLogout(iAccountRepository.findByLogin(requestLoginDto.getLogin()).get().getId(), false);
 
-        String accessToken = jwtServiceImpl.generateAccessToken(requestLoginDto.getLogin());
-        String refreshToken = jwtServiceImpl.generateRefreshToken(requestLoginDto.getLogin());
+        String accessToken = iJwtServiceImpl.generateAccessToken(requestLoginDto.getLogin());
+        String refreshToken = iJwtServiceImpl.generateRefreshToken(requestLoginDto.getLogin());
 
         return new ResponseLoginDto(accessToken, refreshToken);
     }
@@ -69,19 +60,19 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
 
         String token = authorizationHeader.substring(7);
-        String login = jwtServiceImpl.extractUsername(token);
+        String login = iJwtServiceImpl.extractUsername(token);
 
         UserDetails userDetails = accountUserDetailService.loadUserByUsername(login);
 
-        if (jwtServiceImpl.isValidToken(token, userDetails)) {
+        if (iJwtServiceImpl.isValidToken(token, userDetails)) {
 
-            String accessToken = jwtServiceImpl.generateAccessToken(userDetails.getUsername());
-            String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails.getUsername());
+            String accessToken = iJwtServiceImpl.generateAccessToken(userDetails.getUsername());
+            String refreshToken = iJwtServiceImpl.generateRefreshToken(userDetails.getUsername());
 
             return new ResponseLoginDto(accessToken, refreshToken);
 
         }
 
-        return null;
+        return null; //todo ТУТ КОСТЫЛЬ!!!!
     }
 }

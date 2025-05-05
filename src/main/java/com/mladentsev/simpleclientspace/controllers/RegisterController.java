@@ -3,10 +3,12 @@ package com.mladentsev.simpleclientspace.controllers;
 
 import com.mladentsev.simpleclientspace.dto.request.RequestRegisterDto;
 
-import com.mladentsev.simpleclientspace.exception.InvalidRequestParametrsException;
-import com.mladentsev.simpleclientspace.exception.UserExistsException;
+import com.mladentsev.simpleclientspace.exceptions.UserExistsException;
+import com.mladentsev.simpleclientspace.services.IRegistrationService;
 import com.mladentsev.simpleclientspace.services.RegistrationServiceImpl;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -19,19 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterController {
 
-    private final RegistrationServiceImpl accountService;
+    private final IRegistrationService iAccountService;
 
     @Autowired
     public RegisterController(RegistrationServiceImpl accountService) {
-        this.accountService = accountService;
+        this.iAccountService = accountService;
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody RequestRegisterDto requestRegisterDto) {
         try {
-            accountService.signUp(requestRegisterDto);
+            iAccountService.signUp(requestRegisterDto);
             return ResponseEntity.ok().body("Пользователь успешно создан");
-        } catch (InvalidRequestParametrsException | UserExistsException e) {
+        } catch (UserExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

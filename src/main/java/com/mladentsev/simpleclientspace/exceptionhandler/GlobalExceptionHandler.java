@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
-// todo надо разобраться более подробнод
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -26,7 +28,7 @@ public class GlobalExceptionHandler {
         return "Некорректный формат тела запроса.";
     }
 
-    @ExceptionHandler({ MethodArgumentNotValidException.class })
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public Map<String, String> handleValidationExceptions(
@@ -40,25 +42,5 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
-    @ExceptionHandler({ UsernameNotFoundException.class })
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ResponseBody
-    public String handleUsernameNotFoundException(Exception ex) {
-        return "Пользователь не найден.";
-    }
-
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ResponseBody
-    @ExceptionHandler({ ExpiredJwtException.class })
-    public String handleExpiredJwtException(Exception ex) {
-        return "Токен устарел.";
-    }
-
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ResponseBody
-    @ExceptionHandler({ AccessDeniedException.class })
-    public String handleAccessDeniedException(Exception ex) {
-        return "Недостаточно прав для доступа.";
-    }
 
 }

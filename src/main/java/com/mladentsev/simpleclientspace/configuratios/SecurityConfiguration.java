@@ -2,6 +2,7 @@ package com.mladentsev.simpleclientspace.configuratios;
 
 
 import com.mladentsev.simpleclientspace.filters.JwtFilter;
+import com.mladentsev.simpleclientspace.handler.CustomAuthenticationEntryPoint;
 import com.mladentsev.simpleclientspace.handler.CustomAccessDeniedHandler;
 import com.mladentsev.simpleclientspace.handler.CustomLogoutHandler;
 import com.mladentsev.simpleclientspace.services.AccountUserDetailServiceImpl;
@@ -45,15 +46,19 @@ public class SecurityConfiguration {
 
     private final CustomLogoutHandler customLogoutHandler;
 
+    private final CustomAuthenticationEntryPoint unauthorizedHandler;
+
     @Autowired
     public SecurityConfiguration(JwtFilter jwtFIlter,
                                  AccountUserDetailServiceImpl accountUserDetailService,
                                  CustomAccessDeniedHandler accessDeniedHandler,
-                                 CustomLogoutHandler customLogoutHandler) {
+                                 CustomLogoutHandler customLogoutHandler,
+                                 CustomAuthenticationEntryPoint unauthorizedHandler) {
         this.jwtFIlter = jwtFIlter;
         this.accountUserDetailService = accountUserDetailService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.customLogoutHandler = customLogoutHandler;
+        this.unauthorizedHandler = unauthorizedHandler;
     }
 
     @Bean
@@ -67,6 +72,10 @@ public class SecurityConfiguration {
                         .anyRequest()
                         .authenticated())
                 .userDetailsService(accountUserDetailService)
+                .exceptionHandling(e -> {
+                    e.accessDeniedHandler(accessDeniedHandler);
+                    e.authenticationEntryPoint(unauthorizedHandler);
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtFIlter, UsernamePasswordAuthenticationFilter.class)
                 .logout(log -> {
