@@ -16,19 +16,52 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Фильтр JWT-аутентификации, обрабатывающий запросы, защищённые токеном.
+ * <p>Проверяет заголовок Authorization и извлекает из него JWT-токен.
+ * Затем производит проверку действительности токена и добавляет соответствующую аутентификационную запись в Spring Security Context.</p>
+ */
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+    /**
+     * Интерфейс службы JWT для работы с токенами.
+     */
     private final IJwtService iJwtService;
 
+    /**
+     * Сервис загрузки данных о пользователе.
+     */
     private final AccountUserDetailServiceImpl accountUserDetailService;
 
+    /**
+     * Конструктор фильтра с зависимостью на службу JWT и службу пользователя.
+     *
+     * @param jwtService          интерфейс для работы с JWT-токенами
+     * @param accountUserDetailService реализация сервиса загрузки данных пользователя
+     */
     public JwtFilter(IJwtService jwtService, AccountUserDetailServiceImpl accountUserDetailService) {
         this.iJwtService = jwtService;
         this.accountUserDetailService = accountUserDetailService;
     }
 
-
+    /**
+     * Основной метод фильтрации запроса.
+     *
+     * <ol>
+     *   <li>Получает заголовок Authorization из запроса.</li>
+     *   <li>Проверяет правильность формирования заголовка (начинается с Bearer).</li>
+     *   <li>Извлекает токен и пытается извлечь имя пользователя из токена.</li>
+     *   <li>Производит загрузку данных пользователя по извлечённому имени.</li>
+     *   <li>Проверяет действительность токена и устанавливает аутентификацию, если всё успешно.</li>
+     * </ol>
+     *
+     * @param request объект запроса
+     * @param response объект ответа
+     * @param filterChain цепочка фильтров
+     * @throws ServletException если произошла ошибка в обработке сервлета
+     * @throws IOException если возникла проблема ввода-вывода
+     */
     @Override
     protected void doFilterInternal (
                                     @NonNull HttpServletRequest request,

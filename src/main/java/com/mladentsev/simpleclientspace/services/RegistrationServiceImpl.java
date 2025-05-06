@@ -2,16 +2,20 @@ package com.mladentsev.simpleclientspace.services;
 
 
 import com.mladentsev.simpleclientspace.dto.request.RequestRegisterDto;
-import com.mladentsev.simpleclientspace.exceptions.UserExistsException;
+
 import com.mladentsev.simpleclientspace.models.Account;
 import com.mladentsev.simpleclientspace.models.Role;
 import com.mladentsev.simpleclientspace.models.User;
+
 import com.mladentsev.simpleclientspace.repositories.IAccountRepository;
 import com.mladentsev.simpleclientspace.repositories.IRoleRepository;
 import com.mladentsev.simpleclientspace.repositories.IUserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,7 +45,7 @@ public class RegistrationServiceImpl implements IRegistrationService {
 
     public void signUp(RequestRegisterDto requestRegisterDto) {
         if (iAccountRepositories.existsByLogin(requestRegisterDto.getLogin())) {
-            throw new UserExistsException("Пользователь с логином '" + requestRegisterDto.getLogin() + "' уже существует");
+            throw new UsernameNotFoundException("Пользователь с логином '" + requestRegisterDto.getLogin() + "' уже существует");
         }
 
         User user = new User();
