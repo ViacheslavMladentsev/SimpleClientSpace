@@ -13,7 +13,7 @@
 	<groupId>com.mladentsev</groupId>
 	<artifactId>SimpleClientSpace</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TaskManagementSystem</name>
+	<name>SimpleClientSpace</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
