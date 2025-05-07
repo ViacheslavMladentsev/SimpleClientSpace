@@ -23,18 +23,38 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Реализация сервиса регистрации новых пользователей.
+ */
 @Service
 public class RegistrationServiceImpl implements IRegistrationService {
-
+    /**
+     * Компонент Spring Security для шифрования паролей перед сохранением в базе данных
+     */
     private final PasswordEncoder encoder;
 
+    /**
+     *Репозиторий для операций с объектами Account (аккаунтами пользователей)
+     */
     private final IAccountRepository iAccountRepositories;
-
+    /**
+     * Репозиторий для операций с объектами User (персонализированными данными пользователей)
+     */
     private final IUserRepository iUserRepositories;
 
+    /**
+     * Репозиторий для операций с объектами Role (ролями пользователей)
+     */
     private final IRoleRepository iRoleRepositories;
 
+    /**
+     * Конструктор класса, инициализирующий зависимости.
+     *
+     * @param encoder               компонент Spring Security для хеширования пароля
+     * @param iAccountRepositories           репозиторий для операций над аккаунтами
+     * @param iUserRepositories              репозиторий для операций над пользователями
+     * @param iRoleRepositories              репозиторий для операций над ролями
+     */
     @Autowired
     public RegistrationServiceImpl(PasswordEncoder encoder, IAccountRepository iAccountRepositories, IUserRepository iUserRepositories, IRoleRepository iRoleRepositories) {
         this.encoder = encoder;
@@ -43,6 +63,12 @@ public class RegistrationServiceImpl implements IRegistrationService {
         this.iRoleRepositories = iRoleRepositories;
     }
 
+    /**
+     * Регистрация нового пользователя.
+     * Если аккаунт с указанным логином уже существует, выбрасывается исключение {@link UsernameNotFoundException}.
+     *
+     * @param requestRegisterDto объект DTO, содержащий данные регистрации (логин, пароль, ФИО, роли)
+     */
     public void signUp(RequestRegisterDto requestRegisterDto) {
         if (iAccountRepositories.existsByLogin(requestRegisterDto.getLogin())) {
             throw new UsernameNotFoundException("Пользователь с логином '" + requestRegisterDto.getLogin() + "' уже существует");
